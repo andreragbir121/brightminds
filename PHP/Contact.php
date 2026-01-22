@@ -26,7 +26,7 @@ if (isset($_GET['logout'])) {
 
     <ul class="Navigation">
         <li><img class ="navbar-logo" src ="../IMGS/LOGO/Navbar-Logo.png" alt=""></li> 
-         <li class="nav-option" ><a class ="nav-links" href="../Index.php">Home</a></li>
+         <li class="nav-option" ><a class ="nav-links" href="/index.php">Home</a></li>
          <li class="nav-option"><a class ="nav-links" href="About.php">About</a></li>
          <li class="nav-option"><a class ="nav-links" href="../PHP/EssayList.php">Essays</a></li>
          <li class="nav-option"><a class ="nav-links" href="Contact.php">Contact</a></li>
