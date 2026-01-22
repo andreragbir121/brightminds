@@ -65,7 +65,8 @@ Code can be found on github https://github.com/andreragbir121/Late-Bites  -->
             <h2 class ="about-heading">BrightMinds</h2>
             <h5 class="about-sub-heading">Ministry of education</h5>
             <p class="about-description">BrightMinds is a website dedicated to promoting and presenting to the public the creative minds of our next generation. The main purpose is to allow everyone throughout the world to view and explore different essays written by students from secondary schools in Trinidad and Tobago, as well as their grades and remarks from our local instructors at each institution. The website is open to the public with no need to register. <br> <br>
-			</p>  
+		Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam labore sunt officia non modi repellendus fuga, numquam aperiam! Exercitationem deleniti, rem velit et nihil cumque fugiat corporis quis eum delectus.	
+        </p>  
 		</div>
 
     </div>
