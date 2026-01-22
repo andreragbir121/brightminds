@@ -20,7 +20,7 @@ require_once "dbase_connect.php";
 
     <ul class="Navigation">
        <li><img class ="navbar-logo" src ="../IMGS/LOGO/Navbar-Logo.png" alt=""></li> 
-        <li class="nav-option" ><a class ="nav-links" href="/index.php">Home</a></li>
+        <li class="nav-option" ><a class ="nav-links" href="../ndex.php">Home</a></li>
         <li class="nav-option"><a class ="nav-links" href="About.html">About</a></li>
         <li class="nav-option"><a class ="nav-links" href="../PHP/EssayList.php">Essays</a></li>
         <li class="nav-option"><a class ="nav-links" href="Contact.html">Contact</a></li>
@@ -56,215 +56,165 @@ require_once "dbase_connect.php";
 
 // ===================================================================================================================================
   // Data Validation Part: 
-
+// Initialize variables
 $fullName = $username = $birthDate = $parentName = $parentEmail = $schoolName = $classLevel = $passwordConfirm = "";
 $fullNameErr = $usernameErr = $birthDateErr = $parentNameErr = $parentEmailErr = $schoolNameErr = $classLevelErr = $passwordErr = $passwordConfirmErr = "";
-
 $valid = true;
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["submit"])) {
-
-      if (empty($_POST["fullName"])) {
-
+    // Full Name
+    if (empty($_POST["fullName"])) {
         $fullNameErr = "Full name is required";
         $valid = false;
-    }
-    else {
-        $fullName = $_POST["fullName"];
-        $fullName = test_input($fullName); 
-
-        if (!preg_match("/[a-zA-Z]+[ a-zA-Z]*/", $fullName)) {     
-            $fullNameErr = "Name may only contain letters or ' ! and -";
+    } else {
+        $fullName = test_input($_POST["fullName"]);
+        if (!preg_match("/^[a-zA-Z\s'-]+$/", $fullName)) {
+            $fullNameErr = "Name may only contain letters, spaces, apostrophes, and hyphens";
             $valid = false;
         }
     }
 
-  
-  if (empty($_POST["username"])) {
-
-    $usernameErr = "A username is required";
-    $valid = false;
-}
-else {
-    $username = $_POST["username"];
-    $username = test_input($username);
-
-    if (!preg_match("/^[a-zA-Z0-9_\-!@#$%^&*()+=.,;:]+$/", $username)) {
-        $usernameErr = "username may only contain letters, numbers and special characters. No spaces";
+    // Username
+    if (empty($_POST["username"])) {
+        $usernameErr = "A username is required";
         $valid = false;
+    } else {
+        $username = test_input($_POST["username"]);
+        if (!preg_match("/^[a-zA-Z0-9_\-!@#$%^&*()+=.,;:]+$/", $username)) {
+            $usernameErr = "Invalid characters in username";
+            $valid = false;
+        }
     }
-}
- 
-if (empty($_POST["birthDate"])) {
 
-  $birthDateErr = "Birth Date is required";
-  $valid = false;
-}
-else {
-  $birthDate = $_POST["birthDate"];
-  $dateOfBirth = test_input($birthDate);
-
-  if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $birthDate)) {
-      $birthDateErr = "username may only contain letters, numbers and special characters. No spaces";
-      $valid = false;
-  }
-}
-
-
-if (empty($_POST["parentName"])) {
-
-  $parentNameErr = "Parent full name is required";
-  $valid = false;
-}
-else {
-  $parentName = $_POST["parentName"];
-  $parentName = test_input($parentName); 
-
-  if (!preg_match("/[a-zA-Z]+[ a-zA-Z]*/", $parentName)) {
-      $parentNameErr = "Name may only contain letters or ' ! and -";
-      $valid = false;
-  }
-}
-
-if (empty($_POST["parentEmail"])) {
-
-  $parentEmailErr = "Parent email is required";
-  $valid = false;
-}
-else {
-  $parentEmail = $_POST["parentEmail"];
-  $parentEmail = test_input($parentEmail);
-
-  if (!preg_match("/^[a-zA-Z0-9]{3,24}@[ a-zA-Z0-9]{2,40}.[a-zA-Z]{2,4}$/", $parentEmail)) {
-      $parentEmailErr = "email can only contain letters and special char";
-      $valid = false;
-  }
-}
-
-
-if (empty($_POST["schoolName"])) {
-    $schoolNameErr = "School selection is required";
-    $valid = false;
-} else {
-    $schoolName = test_input($_POST["schoolName"]);
-}
-
-
-if (empty($_POST["classLevel"])) {
-    $classLevelErr = "Class level is required";
-    $valid = false;
-} else {
-    $classLevel = test_input($_POST["classLevel"]);
-}
-
-if (empty($_POST["classLevel"])) {
-  $classLevelErr = "Class level is required";
-  $valid = false;
-} else {
-  $classLevel = test_input($_POST["classLevel"]);
-}
-
-
-if (empty($_POST["password"])) {
-
-  $passwordErr = "password is required";
-  $valid = false;
-}
-else {
-  $password = $_POST["password"];
-  $password = test_input($password);
-
-  // Regex for password taken from : https://uibakery.io/regex-library/password 
-  if (!preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/", $password)) {
-      $passwordErr = "Password must be at least 8 characters long and include an uppercase letter, lowercase letter, number, and symbol";
-      $valid = false;
-  }
-}
-
-if (empty($_POST["passwordConfirm"])) {
-    $passwordConfirmErr = "Please confirm your password";
-    $valid = false;
-} else {
-    $passwordConfirm = $_POST["passwordConfirm"];
-    $passwordConfirm = test_input($passwordConfirm);
-    
-    if ($password !== $passwordConfirm) {
-        $passwordConfirmErr = "Passwords do not match";
+    // Birth Date
+    if (empty($_POST["birthDate"])) {
+        $birthDateErr = "Birth Date is required";
         $valid = false;
-    }
-}
-// if(!($password===$passwordConfirm))die("The passwords do not Match.  Please return to registration page");
-
-// Image Uploading: 
-$target_dir = "uploads/";
-$target_file = $target_dir . basename($_FILES["pfp"]["name"]);
-$uploadOk = 1;
-$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-
-// Check if image file is a actual image or fake image
-if(isset($_POST["submit"])) {
-  $check = getimagesize($_FILES["pfp"]["tmp_name"]);
-  if($check !== false) {
-    echo "File is an image - " . $check["mime"] . ".";
-    $uploadOk = 1;
-  } else {
-    echo "File is not an image.";
-    $uploadOk = 0;
-  }
-}
-
-// Check file size
-if ($_FILES["pfp"]["size"] > 500000) {
-  echo "Sorry, your file is too large.";
-  $uploadOk = 0;
-}
-
-// Allow certain file formats
-if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-&& $imageFileType != "gif" ) {
-  echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-  $uploadOk = 0;
-}
-
-// Check if $uploadOk is set to 0 by an error
-if ($uploadOk == 0) {
-  echo "Sorry, your file was not uploaded.";
-// if everything is ok, try to upload file
-} else {
-  if (move_uploaded_file($_FILES["pfp"]["tmp_name"], $target_file)) {
-    echo "The file ". htmlspecialchars( basename( $_FILES["pfp"]["name"])). " has been uploaded.";
-  } else {
-    echo "Sorry, there was an error uploading your file.";
-  }
-}
-
-    $pfp = $_POST && $_FILES["pfp"];
-
-    $password = password_hash ($password, PASSWORD_DEFAULT);
-
-    $qry = "INSERT INTO student (pfp, fullName, username, birthDate, parentName, parentEmail, password, schoolName, classLevel) VALUES ('$pfp', '$fullName', '$username', '$birthDate', '$parentName', '$parentEmail', '$password', '$schoolName', '$classLevel')";
-
-    $result = null;
-
-    try{
-        $result = mysqli_query($conn, $qry);
-
-    } catch(Exception $e) {
-        echo '<br><br>Error occurred: ' . mysqli_error($conn) . '<br><br>';
-        echo " Failed to register. Please try again";
+    } else {
+        $birthDate = test_input($_POST["birthDate"]);
+        if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $birthDate)) {
+            $birthDateErr = "Invalid date format (YYYY-MM-DD)";
+            $valid = false;
+        }
     }
 
-    if($result) echo "<br><br>Thank Your for registering. <a href=\'/index.php'>return to home</a> to continue<br><br>";
-  }
+    // Parent Name
+    if (empty($_POST["parentName"])) {
+        $parentNameErr = "Parent full name is required";
+        $valid = false;
+    } else {
+        $parentName = test_input($_POST["parentName"]);
+        if (!preg_match("/^[a-zA-Z\s'-]+$/", $parentName)) {
+            $parentNameErr = "Invalid characters in parent name";
+            $valid = false;
+        }
+    }
 
-  function test_input($data)
-  {
-      $data = trim($data);
-      $data = stripslashes($data);
-      $data = htmlspecialchars($data);
-      return $data;
-  }
+    // Parent Email
+    if (empty($_POST["parentEmail"])) {
+        $parentEmailErr = "Parent email is required";
+        $valid = false;
+    } else {
+        $parentEmail = test_input($_POST["parentEmail"]);
+        if (!filter_var($parentEmail, FILTER_VALIDATE_EMAIL)) {
+            $parentEmailErr = "Invalid email format";
+            $valid = false;
+        }
+    }
+
+    // School Name
+    if (empty($_POST["schoolName"])) {
+        $schoolNameErr = "School selection is required";
+        $valid = false;
+    } else {
+        $schoolName = test_input($_POST["schoolName"]);
+    }
+
+    // Class Level
+    if (empty($_POST["classLevel"])) {
+        $classLevelErr = "Class level is required";
+        $valid = false;
+    } else {
+        $classLevel = test_input($_POST["classLevel"]);
+    }
+
+    // Password
+    if (empty($_POST["password"])) {
+        $passwordErr = "Password is required";
+        $valid = false;
+    } else {
+        $password = test_input($_POST["password"]);
+        if (!preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/", $password)) {
+            $passwordErr = "Password must be at least 8 characters long and include uppercase, lowercase, number, and symbol";
+            $valid = false;
+        }
+    }
+
+    // Confirm Password
+    if (empty($_POST["passwordConfirm"])) {
+        $passwordConfirmErr = "Please confirm your password";
+        $valid = false;
+    } else {
+        $passwordConfirm = test_input($_POST["passwordConfirm"]);
+        if ($password !== $passwordConfirm) {
+            $passwordConfirmErr = "Passwords do not match";
+            $valid = false;
+        }
+    }
+
+    // File Upload
+    $pfp = "";
+    if (!empty($_FILES["pfp"]["name"])) {
+        $target_dir = __DIR__ . "/uploads/";
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0755, true);
+        }
+        $target_file = $target_dir . basename($_FILES["pfp"]["name"]);
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+        $check = getimagesize($_FILES["pfp"]["tmp_name"]);
+        if ($check === false) {
+            echo "File is not an image.";
+            $valid = false;
+        }
+
+        if ($_FILES["pfp"]["size"] > 500000) {
+            echo "File too large.";
+            $valid = false;
+        }
+
+        if (!in_array($imageFileType, ["jpg", "jpeg", "png", "gif"])) {
+            echo "Invalid file type.";
+            $valid = false;
+        }
+
+        if ($valid && move_uploaded_file($_FILES["pfp"]["tmp_name"], $target_file)) {
+            $pfp = "uploads/" . basename($_FILES["pfp"]["name"]);
+        } else {
+            echo "Error uploading file.";
+            $valid = false;
+        }
+    }
+
+    // Insert into DB
+    if ($valid) {
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+        $stmt = $conn->prepare("INSERT INTO student (pfp, fullName, username, birthDate, parentName, parentEmail, password, schoolName, classLevel) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssss", $pfp, $fullName, $username, $birthDate, $parentName, $parentEmail, $passwordHash, $schoolName, $classLevel);
+
+        if ($stmt->execute()) {
+            echo "Thank you for registering. <a href='/index.php'>Return to home</a>";
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+    }
+}
+
+function test_input($data) {
+    return htmlspecialchars(stripslashes(trim($data)));
+}
 
   // ===================================================================================================================================
 
