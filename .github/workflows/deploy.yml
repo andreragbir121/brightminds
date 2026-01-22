@@ -1,0 +1,88 @@
+name: Deploy to Byethost
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Verify required files exist
+        run: |
+          set -euo pipefail
+          echo "Checking for required files..."
+          test -f PHP/index.php && echo "index.php"
+          test -f PHP/About.php && echo "About.php"
+          test -f PHP/Contact.php && echo "Contact.php"
+          test -f PHP/EssayList.php && echo "EssayList.php"
+          test -f PHP/EssayUpload.php && echo "EssayUpload.php"
+          test -f PHP/dbase_connect.php && echo "dbase_connect.php"
+          test -f PHP/essayDetails.php && echo "essayDetails.php"
+          test -f PHP/instructorreg.php && echo "instructorreg.php"
+          test -f PHP/registration.php && echo "registration.php"
+          test -f PHP/ungradedEssays.php && echo "ungradedEssays.php"
+          test -d PHP/uploads || true
+          test -d CSS && echo "CSS directory"
+          test -f CSS/style.css && echo "style.css"
+          test -d JS && echo "JS directory"
+          echo "All required files found"
+
+      - name: PHP Lint Check
+        run: |
+          set -euo pipefail
+          echo "Checking PHP syntax for all tracked .php files"
+          LINT_FAILED=0
+          for f in $(git ls-files "*.php"); do
+            echo "Linting $f"
+            if ! php -l "$f"; then
+              echo "Syntax error in $f"
+              LINT_FAILED=1
+            else
+              echo "$f is valid"
+            fi
+          done
+          if [ $LINT_FAILED -eq 1 ]; then
+            echo "PHP lint check failed!"
+            exit 1
+          fi
+          echo "All PHP files passed syntax check"
+
+  deploy:
+    name: Deploy to Byethost FTP
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v4
+
+      - name: Deploy to STAGING
+        if: github.ref == 'refs/heads/staging'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          server-dir: /brightminds.is-great.net/htdocs/
+
+      - name: Deploy to PRODUCTION
+        if: github.ref == 'refs/heads/main'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          server-dir: /brightminds.is-great.net/htdocs/
