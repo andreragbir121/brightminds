@@ -6,6 +6,8 @@ on:
       - main
       - staging
   workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"   # every hour
 
 jobs:
   build-and-test:
@@ -86,3 +88,10 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
           server-dir: /brightminds.is-great.net/htdocs/
+
+  keepalive:
+    name: Keep Byethost Domain Alive
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping site
+        run: curl -I https://brightminds.is-great.net/index.php
