@@ -153,7 +153,7 @@ if (isset($_SESSION['username'])) {
                             $_SESSION['email'] = $row['email'];
                             $_SESSION['schoolName'] = $row['schoolName'];
                         }
-					header("Location: Index.php"); //issues logging in so header was solution, user need to click login twice - https://stackoverflow.com/questions/39291500/redirecting-user-after-login-with-headerlocation-is-not-working
+					header("Location: index.php"); //issues logging in so header was solution, user need to click login twice - https://stackoverflow.com/questions/39291500/redirecting-user-after-login-with-headerlocation-is-not-working
 		        }
         else echo "Invalid Credentials. Please try again";
     }
