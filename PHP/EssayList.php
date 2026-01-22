@@ -5,7 +5,7 @@ require_once "dbase_connect.php";
 
 if (isset($_GET['logout'])) {
     session_destroy();
-    header("Location: ../Index.php");;
+    header("Location: /index.php");;
 }
 ?>
 

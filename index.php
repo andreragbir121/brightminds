@@ -4,7 +4,7 @@ session_start();
 
 if (isset($_GET['logout'])) {
     session_destroy();
-    header("Location: Index.php");;
+    header("Location: index.php");;
 }
 
 $message = "";

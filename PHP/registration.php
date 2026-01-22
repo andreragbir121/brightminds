@@ -20,10 +20,10 @@ require_once "dbase_connect.php";
 
     <ul class="Navigation">
        <li><img class ="navbar-logo" src ="../IMGS/LOGO/Navbar-Logo.png" alt=""></li> 
-        <li class="nav-option" ><a class ="nav-links" href="/ndex.php">Home</a></li>
-        <li class="nav-option"><a class ="nav-links" href="About.html">About</a></li>
-        <li class="nav-option"><a class ="nav-links" href="../PHP/EssayList.php">Essays</a></li>
-        <li class="nav-option"><a class ="nav-links" href="Contact.html">Contact</a></li>
+        <li class="nav-option" ><a class ="nav-links" href="/index.php">Home</a></li>
+        <li class="nav-option"><a class ="nav-links" href="About.php">About</a></li>
+        <li class="nav-option"><a class ="nav-links" href="EssayList.php">Essays</a></li>
+        <li class="nav-option"><a class ="nav-links" href="Contact.php">Contact</a></li>
      <?php if (isset($_SESSION['userType']) && $_SESSION['userType'] === 'instructor') {
             echo '<li class="nav-option"><a class="nav-links" href="UngradedEssays.php">Ungraded Essays</a></li>';
         }
