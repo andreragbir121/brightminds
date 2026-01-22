@@ -20,7 +20,7 @@ require_once "dbase_connect.php";
 
     <ul class="Navigation">
        <li><img class ="navbar-logo" src ="../IMGS/LOGO/Navbar-Logo.png" alt=""></li> 
-        <li class="nav-option" ><a class ="nav-links" href="../ndex.php">Home</a></li>
+        <li class="nav-option" ><a class ="nav-links" href="/ndex.php">Home</a></li>
         <li class="nav-option"><a class ="nav-links" href="About.html">About</a></li>
         <li class="nav-option"><a class ="nav-links" href="../PHP/EssayList.php">Essays</a></li>
         <li class="nav-option"><a class ="nav-links" href="Contact.html">Contact</a></li>
@@ -287,7 +287,7 @@ function test_input($data) {
         <p class="existing-account">Already have an account? <br> <a href="../index.php">Login here</a></p>
 
       </div>
-      <script type="text/javascript" src="../JS/RegValidations.js"></script>
+      <script type="text/javascript" src="/JS/RegValidations.js"></script>
 
 </body>
 </html>

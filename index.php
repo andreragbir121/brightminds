@@ -227,7 +227,7 @@ if (isset($_SESSION['username'])) {
     $result = mysqli_query($conn, $query);  
     } catch (Exception $e){ 
     echo '<br><br>Error occurred: ' . mysqli_error($conn) . '<br><br>'; 
-    echo "Please <a href=\"..\index.html\">return to form</a> to resubmit";  
+    echo "Please <a href=\"/index.html\">return to form</a> to resubmit";  
     }
 
     
