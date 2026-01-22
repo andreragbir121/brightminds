@@ -7,7 +7,7 @@ on:
       - staging
   workflow_dispatch:
   schedule:
-    - cron: "0 * * * *"   # every hour
+    - cron: "0 */6 * * *"   # every 6 hours
 
 jobs:
   build-and-test:
@@ -93,7 +93,10 @@ jobs:
     name: Keep Byethost Domain Alive
     runs-on: ubuntu-latest
     steps:
-      - name: Ping site with browser headers over HTTP
+      - name: Ping multiple pages
         run: |
-          curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36" \
-               --max-time 30 --retry 3 --retry-delay 10 -I http://brightminds.is-great.net/index.php
+          set -euo pipefail
+          for page in index.php About.php Contact.php EssayList.php EssayUpload.php; do
+            echo "Pinging $page..."
+            curl -Is "https://brightminds.is-great.net/$page" || true
+          done
