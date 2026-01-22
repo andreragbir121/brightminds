@@ -93,7 +93,7 @@ jobs:
     name: Keep Byethost Domain Alive
     runs-on: ubuntu-latest
     steps:
-      - name: Ping site with browser headers
+      - name: Ping site with browser headers over HTTP
         run: |
           curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36" \
-               -I https://brightminds.is-great.net/index.php
+               --max-time 30 --retry 3 --retry-delay 10 -I http://brightminds.is-great.net/index.php
