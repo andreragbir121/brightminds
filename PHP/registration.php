@@ -255,7 +255,7 @@ if ($uploadOk == 0) {
         echo " Failed to register. Please try again";
     }
 
-    if($result) echo "<br><br>Thank Your for registering. <a href=\'../index.php'>return to home</a> to continue<br><br>";
+    if($result) echo "<br><br>Thank Your for registering. <a href=\'/index.php'>return to home</a> to continue<br><br>";
   }
 
   function test_input($data)

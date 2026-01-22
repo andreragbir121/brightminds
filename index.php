@@ -244,7 +244,7 @@ if (isset($_SESSION['username'])) {
                     <p class='essay-info'>First Paragraph: <span>{$row['essayFirstParagraph']}</span></p>
 
                     
-                    <a href=\"php/essayDetails.php?essayID={$row['essayID']}\" class='view-essay'>View</a>
+                    <a href=\"PHP/essayDetails.php?essayID={$row['essayID']}\" class='view-essay'>View</a>
                 </div>  ";
             }
         } else {
